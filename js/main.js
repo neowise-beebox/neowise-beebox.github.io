@@ -1,146 +1,125 @@
-var map;
-var dialog;
+function initMap() {        
+    $.ajax({
+    	url: "https://beebox-apidae.herokuapp.com/listbee", 
+        success: function(response){
+        	var map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 4,
+              center: {
+                    lat: -23.363,
+                    lng: 131.044
+                }
+            });
 
-$(function() {
- 	init_map()
- 	display_markers()
+        	var markers = [];
+
+        	var icon = {
+			    url: "images/marker_bee.png", // url
+			    scaledSize: new google.maps.Size(50, 70), // scaled size
+			    origin: new google.maps.Point(0,0), // origin
+			    anchor: new google.maps.Point(0, 0) // anchor
+			};
+
+            
+
+            response.forEach(function(location) {
+                var contentString = '<div id="content">'+
+                    '<div id="siteNotice">'+
+                    '</div>'+
+                    '<h1 id="firstHeading" class="firstHeading">Beebox</h1>'+
+                    '<div id="bodyContent">'+
+                    '<p><b>Beebox</b>Beebox.</p>'+
+                    '</div>'+
+                    '</div>';
+
+                var infowindow = new google.maps.InfoWindow({
+                  content: contentString
+                });
+
+                var marker = new google.maps.Marker({
+                  position: location.coord,
+                  map: map,
+                  icon : icon,
+                  title: 'Marker'
+                });
+
+                marker.addListener('click', function() {
+                  infowindow.open(map, marker);
+                });
+
+                map.setZoom(15);
+            	map.panTo(marker.position);
+
+            	var latLng = new google.maps.LatLng(location.coord.lat,
+				              location.coord.lng);
+			    var marker = new google.maps.Marker({
+			      position: latLng
+			    });
+			    markers.push(marker);
+            });   
+
+            if (navigator.geolocation) {
+			    navigator.geolocation.getCurrentPosition(function(position){
+
+			        var lat = position.coords.latitude;
+			        var lng = position.coords.longitude;
+			         
+			    	var contentString = '<div id="content">'+
+	                    '<div id="siteNotice">'+
+	                    '</div>'+
+	                    '<h1 id="firstHeading" class="firstHeading">Beebox</h1>'+
+	                    '<div id="bodyContent">'+
+	                    '<p><b>Beebox</b>Beebox.</p>'+
+	                    '</div>'+
+	                    '</div>';
+
+	                var infowindow = new google.maps.InfoWindow({
+	                  content: contentString
+	                });
+
+	                var icon = {
+					    url: "images/marker_home.png", // url
+					    scaledSize: new google.maps.Size(50, 55), // scaled size
+					    origin: new google.maps.Point(0,0), // origin
+					    anchor: new google.maps.Point(0, 0) // anchor
+					};
+
+	                var marker = new google.maps.Marker({
+	                  position: {
+	                  	lat,lng
+	                  },
+	                  map: map,
+	                  icon : icon,
+	                  title: 'Marker'
+	                });
+	                
+	                marker.addListener('click', function() {
+	                  infowindow.open(map, marker);
+	                });
+
+	                map.setZoom(15);
+	            	map.panTo(marker.position);
+
+	            	var latLng = new google.maps.LatLng(lat,
+				              lng);
+				    var marker = new google.maps.Marker({
+				      position: latLng
+				    });
+
+				    markers.push(marker);
+
+			    });
+			} 
+
+			console.log(markers);
+    
+		  	var markerCluster = new MarkerClusterer(map, markers);
+        }
+    });            
+}    
+
+$(function(){
+	$("#filtrar").click(function(){
+		alert($("#latitude").val());
+		alert($("#longitude").val());
+	});
 });
-
-
-function init_map(){
-	map = L.map('map').setView([-25.431456, -49.258988], 13);
-	  L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-	    {
-	      attribution: 'Tiles by <a href="http://openstreetmap.org">openstreetmap</a></a>',
-	      maxZoom: 17,
-	      minZoom: 2
-	    }).addTo(map);
-}
-
-function display_markers(){
-	var meta1nJson={
-	  "type": "FeatureCollection",
-	  "features": [
-	    {
-	      "type": "Feature",
-	      "geometry": {
-	        "type": "Point",
-	        "coordinates": [
-	          -38.3613558,
-	          -8.8044875
-	        ]
-	      },
-	      "properties": {
-	        "Ordem": "193",
-	        "Eixo": "Leste",
-	        "Meta": "1L",
-	        "Municipio": "Petrolândia",
-	        "Estado": "PE",
-	        "Nome da Comunidade": "Agrovila 4"
-	      }
-	    },
-	    {
-	      "type": "Feature",
-	      "geometry": {
-	        "type": "Point",
-	        "coordinates": [
-	          -38.3445892,
-	          -8.7940031
-	        ]
-	      },
-	      "properties": {
-	        "Ordem": "194",
-	        "Eixo": "Leste",
-	        "Meta": "1L",
-	        "Municipio": "Petrolândia / Floresta",
-	        "Estado": "PE",
-	        "Nome da Comunidade": "Agrovila 5"
-	      }
-	    },
-	    {
-	      "type": "Feature",
-	      "geometry": {
-	        "type": "Point",
-	        "coordinates": [
-	          -37.8521847,
-	          -8.6774657
-	        ]
-	      },
-	      "properties": {
-	        "Ordem": "195",
-	        "Eixo": "Leste",
-	        "Meta": "1L",
-	        "Municipio": "InajÃ¡/Ibimirim",
-	        "Estado": "PE",
-	        "Nome da Comunidade": "Indígena KambiwÃ¡ - Baxa da Alexandra"
-	      }
-	    },
-	      {
-	      "type": "Feature",
-	      "geometry": {
-	        "type": "Point",
-	        "coordinates": [
-	          -36.8521847,
-	          -8.6774657
-	        ]
-	      },
-	      "properties": {
-	        "Ordem": "195",
-	        "Eixo": "Leste",
-	        "Meta": "1L",
-	        "Municipio": "InajÃ¡/Ibimirim",
-	        "Estado": "PE",
-	        "Nome da Comunidade": "Indígena KambiwÃ¡ - Baxa da Alexandra"
-	      }
-	    },
-	    {
-	      "type": "Feature",
-	      "geometry": {
-	        "type": "Point",
-	        "coordinates": [
-	          -37.9229577,
-	          -8.645232
-	        ]
-	      },
-	      "properties": {
-	        "Ordem": "196",
-	        "Eixo": "Leste",
-	        "Meta": "1L",
-	        "Municipio": "InajÃ¡",
-	        "Estado": "PE",
-	        "Nome da Comunidade": "Indígena KambiwÃ¡ -  BarracÃ£o"
-	      }
-	    }
-	  ]
-	};
-
-
-	var markers = L.markerClusterGroup();
-	var data = new L.GeoJSON(meta1nJson, {
-    	onEachFeature: onEachFeature
-	})
-	markers.addLayer(data);
-	map.addLayer(markers);
-}
-
-function destroydialog() {
-	dialog.close()
-}
-
-function onEachFeature(feature, layer) {
-    console.log("abree");
-  console.log(e);
-  dialog = L.control.dialog()
-      .setContent(
-	    '<div class="modal-content">'+
-	      '<h4>Informações</h4>'+
-	      '<p>'+e+'</p>'+
-	    '</div>'+
-	   ' <div class="modal-footer">'+
-	      '<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>'+
-	  '</div>')
-      .addTo(map);
-  if (dialog != 'undefined'){
-  	dialog.open();
-  }
-}
