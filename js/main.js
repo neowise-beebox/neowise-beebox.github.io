@@ -14,7 +14,7 @@ function initMap() {
         	var markers = [];
 
         	var icon = {
-			    url: "images/marker_bee.png", // url
+			    url: "images/pin-2.png", // url
 			    scaledSize: new google.maps.Size(50, 70), // scaled size
 			    origin: new google.maps.Point(0,0), // origin
 			    anchor: new google.maps.Point(0, 0) // anchor
