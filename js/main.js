@@ -2,6 +2,7 @@ function initMap() {
     $.ajax({
     	url: "https://beebox-apidae.herokuapp.com/listbee", 
         success: function(response){
+        	console.log(response);
         	var map = new google.maps.Map(document.getElementById('map'), {
               zoom: 4,
               center: {
@@ -25,9 +26,9 @@ function initMap() {
                 var contentString = '<div id="content">'+
                     '<div id="siteNotice">'+
                     '</div>'+
-                    '<h1 id="firstHeading" class="firstHeading">Beebox</h1>'+
+                    '<h1 id="firstHeading" class="firstHeading">' + location.description + '</h1>'+
                     '<div id="bodyContent">'+
-                    '<p><b>Beebox</b>Beebox.</p>'+
+                    '<p><b>' + location.description + '</b>' + location.description + '</p>'+
                     '</div>'+
                     '</div>';
 
@@ -110,9 +111,6 @@ function initMap() {
 			    });
 			} 
 
-			console.log(markers);
-    
-		  	var markerCluster = new MarkerClusterer(map, markers);
         }
     });            
 }    
