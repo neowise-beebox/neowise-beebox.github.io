@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Info windows</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 90%;
+      }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Beebox</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <form class="navbar-form navbar-left">
+            <div class="form-group">
+                <input id="latitude" type="text" class="form-control" placeholder="Digite a Latitude">
+                <input id="longitude" class="form-control" placeholder="Digite a Longitude">
+            </div>
+            <button type="submit" class="btn btn-default">Filtrar</button>
+        </form>
+        <div class="navbar-form navbar-left">
+            <button type="button" class="btn btn-default">Minha Localização</button>
+        </div>
+        </div>
+      </div>
+    </nav>
+
+    <div id="map"></div>
+    <script>
+
+        function initMap() {
+
+
+            var arrayLocation = [
+                {
+                    lat: -25.363,
+                    lng: 131.044
+                },
+                {
+                    lat: -25.344,
+                    lng: 131.044
+                },
+                {
+                    lat: -25.11111,
+                    lng: 131.044
+                },
+                {
+                    lat: -24.363,
+                    lng: 131.044
+                },
+                {
+                    lat: -23.363,
+                    lng: 131.044
+                }
+            ];
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 4,
+              center: {
+                    lat: -23.363,
+                    lng: 131.044
+                }
+            });
+
+
+            arrayLocation.forEach(function(location) {
+
+                var contentString = '<div id="content">'+
+                    '<div id="siteNotice">'+
+                    '</div>'+
+                    '<h1 id="firstHeading" class="firstHeading">Beebox</h1>'+
+                    '<div id="bodyContent">'+
+                    '<p><b>Beebox</b>Beebox.</p>'+
+                    '</div>'+
+                    '</div>';
+
+                var infowindow = new google.maps.InfoWindow({
+                  content: contentString
+                });
+
+                var marker = new google.maps.Marker({
+                  position: location,
+                  map: map,
+                  title: 'Uluru (Ayers Rock)'
+                });
+                marker.addListener('click', function() {
+                  infowindow.open(map, marker);
+                });
+            });    
+        }    
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2weuXVFlPwdAIEWOAScQ9W9Q_axVbu4Y&callback=initMap">
+    </script>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+#map{ height: 100% }
+
+.brand-logo-left {
+	margin-left: 1em;
+}
+
+.dark-background {
+	background-color: #69b6ff
+}
+
+.page-footer.no-padding{
+	padding-top: none !important;
+}
+
+body {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+}
+
+main {
+	flex: 1 0 auto;
+}
